@@ -27,10 +27,10 @@ logo = "assets/images/laps_zoomies_logo1.png"
 #     dmc.Button("Artifacts", variant="subtle", color="red"),
 #     dmc.Button("Video", variant="subtle", color="green"),
 # ]
-button1 = dmc.Button("Annotated", variant="filled", color="blue", radius="sm" )
-button2 = dmc.Button("Signals", variant="subtle", color="blue")
-button3 = dmc.Button("Artifacts", variant="subtle", color="red")
-button4 = dmc.Button("Video", variant="subtle", color="green")
+button1 = dmc.Button("Annotated Labels", variant="filled", color="blue", radius="xl")
+button2 = dmc.Button("Signals ACC/GYR", variant="filled", color="blue", radius="xl")
+button3 = dmc.Button("Model Artifacts", variant="filled", color="red", radius="xl")
+button4 = dmc.Button("Video File", variant="filled", color="green", radius="xl")
 
 styleGrid = {
     "border": f"1px solid {dmc.DEFAULT_THEME["colors"]["red"][4]}",
@@ -101,12 +101,21 @@ layout = dmc.AppShell(
             #"There is no spoon! (The Shining Boy to Neo in the Oracle's house)"
             dmc.Grid(
                 children=[
-                    dmc.GridCol(html.Div([  # Aqui os botoes sao dispostos como um array
-                        button1,
-                        button2,
-                        button3,
-                        button4
-                        ],
+                    dmc.GridCol(html.Div(
+                    #    [  # Aqui os botoes sao dispostos como um array
+                    #     button1,
+                    #     button2,
+                    #     button3,
+                    #     button4
+                    #     ],
+                    dmc.Stack(
+                        [
+                            button1,
+                            button2,
+                            button3,
+                            button4
+                        ]
+                    ),
                         style=styleGrid), span=2),
                     dmc.GridCol(html.Div("2", style=styleGrid), span=4),
                     dmc.GridCol(html.Div("3", style=styleGrid), span=2),
