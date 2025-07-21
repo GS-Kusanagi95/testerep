@@ -1,7 +1,7 @@
 # Teste funcional do dash em python
-# Criado em: 20250718   Autor: Eng. Charles Ferreira
-# Finalidade do programa: Este programa visa testar o ambiente dash para cons-
-# trucao de um aplicativo responviso para auditoria 
+# Criado em: 20250721   Autor: Eng. Charles Ferreira
+# Finalidade do programa: Implementacao de um dashboard para auditoria
+# de individuos 
 
 # Imports necessarios a implementacao
 import dash
@@ -9,6 +9,9 @@ import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc # type: ignore
 from dash_iconify import DashIconify
 from dash import Dash, Input, Output, State, dash_table, dcc, html, callback, clientside_callback
+import pandas as pd # type: ignore
+import uuid
+from time import sleep
 
 # Inicializa o dashboard app usando temas do dash bootstrap components
 app = Dash()
@@ -21,45 +24,18 @@ theme = {
 
 # ->> Aqui criamos os componentes que serao exibidos no app <<-
 logo = "assets/images/laps_zoomies_logo1.png"
-# buttons = [
-#     dmc.Button("Annotated", variant="subtle", color="blue"),
-#     dmc.Button("Signals", variant="subtle", color="blue"),
-#     dmc.Button("Artifacts", variant="subtle", color="red"),
-#     dmc.Button("Video", variant="subtle", color="green"),
-# ]
-button1 = dmc.Button("Annotated Labels", variant="filled", color="blue", radius="xl")
+
+button1 = dmc.Button("Ground Truth", variant="filled", color="blue", radius="xl")
 button2 = dmc.Button("Signals ACC/GYR", variant="filled", color="blue", radius="xl")
 button3 = dmc.Button("Model Artifacts", variant="filled", color="red", radius="xl")
 button4 = dmc.Button("Video File", variant="filled", color="green", radius="xl")
 
 styleGrid = {
-    "border": f"1px solid {dmc.DEFAULT_THEME["colors"]["red"][4]}",
+    "border": f"1px solid {dmc.DEFAULT_THEME["colors"]["red"][4]}",  # Comentar para retirar as bordas das colunas na versao final
     "textAlign": "center"
 }
 
 # ->> Aqui criamos o lay-out do app posicionando os elementos criados acima dentro de um container <<-
-# app.layout = dmc.MantineProvider(
-#     forceColorScheme="dark",
-#     children=[
-#         dmc.Button(
-#             "Config",
-#             variant="filled",
-#             color="red",
-#             size="md",
-#             radius="xl",
-#             loading=False,
-#             disabled=False,
-#         ),
-#         dmc.Checkbox(
-#             classNames={"root": "dmc-api-demo-root"},
-#             label="Check something",
-#             w=200
-#         ),
-#     ],
-#     defaultColorScheme='dark',
-#     theme=theme
-# )
-
 layout = dmc.AppShell(
     [
         dmc.AppShellHeader(
@@ -77,12 +53,6 @@ layout = dmc.AppShell(
                     dmc.Title(f"Zoomies Audit Dashboard", order=1, c="blue"),
                         ]
                     ),
-                    # dmc.Group(
-                    #     children=buttons,
-                    #     ml="xl",
-                    #     gap=0,
-                    #     visibleFrom="sm"
-                    # ),
                 ],
                 justify="space-between",
                 style={"flex": 1},
@@ -90,24 +60,11 @@ layout = dmc.AppShell(
                 px="md",
             ),
         ),
-        # dmc.AppShellNavbar(
-        #     id="navbar",
-        #     children=buttons,
-        #     py="md",
-        #     px=4,
-        # ),
                 
         dmc.AppShellMain(
-            #"There is no spoon! (The Shining Boy to Neo in the Oracle's house)"
             dmc.Grid(
                 children=[
                     dmc.GridCol(html.Div(
-                    #    [  # Aqui os botoes sao dispostos como um array
-                    #     button1,
-                    #     button2,
-                    #     button3,
-                    #     button4
-                    #     ],
                     dmc.Stack(
                         [
                             button1,
@@ -117,9 +74,9 @@ layout = dmc.AppShell(
                         ]
                     ),
                         style=styleGrid), span=2),
-                    dmc.GridCol(html.Div("2", style=styleGrid), span=4),
-                    dmc.GridCol(html.Div("3", style=styleGrid), span=2),
-                    dmc.GridCol(html.Div("4", style=styleGrid), span=2),
+                    dmc.GridCol(html.Div("Video Area", style=styleGrid), span=4),
+                    dmc.GridCol(html.Div("Return Data 1", style=styleGrid), span=2),
+                    dmc.GridCol(html.Div("Return Data 2", style=styleGrid), span=2),
                 ],
                 gutter="sm",
             ),
@@ -139,8 +96,12 @@ layout = dmc.AppShell(
 app.layout = dmc.MantineProvider(layout)
 
 # ->> Aqui vao os callbacks (retornos ao usuario) do app <<-
+#@clientside_callback
+
+
 @callback(
     Output("appshell", "navbar"),
+    #Output("gnd_truth", "loading"),
     Input("burger", "opened"),
     State("appshell", "navbar"),
 )
