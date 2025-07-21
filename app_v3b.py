@@ -23,7 +23,7 @@ theme = {
 }
 
 # ->> Aqui criamos os componentes que serao exibidos no app <<-
-logo = "assets/images/laps_zoomies_logo1.png"
+logo = "assets/images/laps_logo.png"
 
 button1 = dmc.Button("Ground Truth", variant="filled", color="blue", radius="xl")
 button2 = dmc.Button("Signals ACC/GYR", variant="filled", color="blue", radius="xl")
