@@ -2,3 +2,12 @@ dash
 dash-mantine-components
 dash-iconify
 dash_bootstrap_components
+numpy
+pandas
+matplotlib
+plotly[express]
+opencv-python
+io
+os
+uuid
+tempfile
